@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/kudagonbe/s3-static-api/internal/config"
+	"github.com/kudagonbe/s3-static-api/internal/storage"
 )
 
 func main() {
@@ -14,5 +15,8 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World!!"))
+	if err := storage.PutObject("hello.txt"); err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	w.Write([]byte("Hello World!!!"))
 }
