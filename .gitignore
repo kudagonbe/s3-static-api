@@ -1,4 +1,8 @@
-.env
-
 internal/storage/static/*
 !.gitkeep
+
+.env
+*.env
+.env.*
+!.env.local
+!.env.sample

@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/caarlos0/env/v10"
@@ -25,8 +26,13 @@ func Get() *Config {
 }
 
 func init() {
-	if godotenv.Load() != nil {
-		fmt.Println("No .env file found")
+	envFile := os.Getenv("ENV_FILE")
+	if envFile == "" {
+		envFile = ".env"
+	}
+
+	if godotenv.Load(envFile) != nil {
+		fmt.Printf("No %s file found\n", envFile)
 	}
 
 	cfg := Config{}

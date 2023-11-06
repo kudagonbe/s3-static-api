@@ -3,28 +3,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - ENV_FILE=.env.local
     container_name: app
     depends_on:
       - minio
-    environment:
-      - STORAGE_ENDPOINT=http://minio:9000
-      - STORAGE_ACCESS_KEY=admin
-      - STORAGE_SECRET_KEY=adminpass
-      - STORAGE_BUCKET=sample
-      - PORT=8080
     ports:
-      - '8080:8080'
+      - "8080:8080"
     restart: unless-stopped
   minio:
     container_name: minio
-    command: ['server', '/data', '--console-address', ':9001']
+    command: ["server", "/data", "--console-address", ":9001"]
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=adminpass
     image: quay.io/minio/minio:latest
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     volumes:
       - minio_data:/data
     restart: unless-stopped
