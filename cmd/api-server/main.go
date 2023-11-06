@@ -17,7 +17,8 @@ func main() {
 }
 
 type putRequest struct {
-	Key string `json:"key"`
+	Key          string `json:"key"`
+	AddTimeStamp bool   `json:"add_timestamp"`
 }
 
 type response struct {
@@ -65,7 +66,7 @@ func putHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if err := storage.PutObject(req.Key); err != nil {
+	if err := storage.PutObject(req.Key, req.AddTimeStamp); err != nil {
 		errorResponse(w, err)
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"context"
 	"embed"
 	"fmt"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
@@ -35,7 +36,7 @@ func GetObject(key string) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func PutObject(key string) error {
+func PutObject(key string, addTimeStamp bool) error {
 	b, e := files.ReadFile(fmt.Sprintf("static/%s", key))
 	if e != nil {
 		return e
@@ -43,7 +44,7 @@ func PutObject(key string) error {
 	cfg := config.Get()
 	params := &s3.PutObjectInput{
 		Bucket:        aws.String(cfg.Bucket),
-		Key:           aws.String(key),
+		Key:           aws.String(generateObjectID(key, addTimeStamp)),
 		Body:          bytes.NewBuffer(b),
 		ContentLength: int64(len(b)),
 	}
@@ -56,4 +57,12 @@ func PutObject(key string) error {
 		return err
 	}
 	return nil
+}
+
+func generateObjectID(key string, addTimeStamp bool) string {
+	if addTimeStamp {
+		t := time.Now()
+		return fmt.Sprintf("%s%09d-%s", t.Format("20060102150405"), t.Nanosecond(), key)
+	}
+	return key
 }
