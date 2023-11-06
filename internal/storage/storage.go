@@ -15,6 +15,26 @@ import (
 //go:embed static/*
 var files embed.FS
 
+func GetObject(key string) ([]byte, error) {
+	cfg := config.Get()
+	params := &s3.GetObjectInput{
+		Bucket: aws.String(cfg.Bucket),
+		Key:    aws.String(key),
+	}
+	resp, err := s3.NewFromConfig(cfg.AwsConfig, func(o *s3.Options) {
+		o.UsePathStyle = true
+	}).GetObject(context.Background(), params, s3.WithAPIOptions(
+		v4.SwapComputePayloadSHA256ForUnsignedPayloadMiddleware,
+	))
+	if err != nil {
+		return nil, err
+	}
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	defer resp.Body.Close()
+	return buf.Bytes(), nil
+}
+
 func PutObject(key string) error {
 	b, e := files.ReadFile(fmt.Sprintf("static/%s", key))
 	if e != nil {
