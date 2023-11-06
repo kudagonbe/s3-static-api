@@ -11,12 +11,13 @@ import (
 )
 
 type Config struct {
-	Port      int    `env:"PORT" envDefault:"8080"`
-	Endpoint  string `env:"STORAGE_ENDPOINT,required"`
-	AccessKey string `env:"STORAGE_ACCESS_KEY,required"`
-	SecretKey string `env:"STORAGE_SECRET_KEY,required"`
-	Bucket    string `env:"STORAGE_BUCKET,required"`
-	AwsConfig aws.Config
+	Port         int    `env:"PORT" envDefault:"8080"`
+	Endpoint     string `env:"STORAGE_ENDPOINT,required"`
+	AccessKey    string `env:"STORAGE_ACCESS_KEY,required"`
+	SecretKey    string `env:"STORAGE_SECRET_KEY,required"`
+	Bucket       string `env:"STORAGE_BUCKET,required"`
+	UsePathStyle bool   `env:"STORAGE_USE_PATH_STYLE" envDefault:"false"`
+	AwsConfig    aws.Config
 }
 
 var c *Config

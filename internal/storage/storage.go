@@ -49,7 +49,7 @@ func PutObject(key string, addTimeStamp bool) error {
 		ContentLength: int64(len(b)),
 	}
 	_, err := s3.NewFromConfig(cfg.AwsConfig, func(o *s3.Options) {
-		o.UsePathStyle = true
+		o.UsePathStyle = cfg.UsePathStyle
 	}).PutObject(context.Background(), params, s3.WithAPIOptions(
 		v4.SwapComputePayloadSHA256ForUnsignedPayloadMiddleware,
 	))
