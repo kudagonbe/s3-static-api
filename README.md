@@ -53,12 +53,13 @@ CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/api-server
 ./main
 ```
 
-環境変数設定ファイル名を`.env`にする場合は以下のように起動してください。
-(以下は`.env.dev`とした例)
+※環境変数設定ファイル名を`.env`にする場合は以下のように起動してください。 (以下は`.env.dev`とした例)
 
 ```bash
 ENV_FILE=.env.dev ./main
 ```
+
+## エンドポイント
 
 API は以下のエンドポイントを提供します:
 
