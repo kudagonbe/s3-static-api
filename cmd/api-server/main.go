@@ -15,7 +15,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	if err := storage.PutObject("hello.txt"); err != nil {
+	if err := storage.PutObject("sample.png"); err != nil {
 		w.Write([]byte(err.Error()))
 	}
 	w.Write([]byte("Hello World!!!"))
